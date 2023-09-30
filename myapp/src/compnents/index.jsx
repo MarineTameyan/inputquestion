@@ -6,7 +6,7 @@ export const Questionform = () => {
   const [answers, setAnswers] = useState(["", "", "", ""]);
   const [showAnswers, setShowAnswers] = useState(false);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(-1);
-  const [color, setColor] = useState("black"); // Initialize color as black
+  const [color, setColor] = useState("black"); 
 
   const handleChange = (e) => {
     setQuestion(e.target.value);
@@ -24,10 +24,10 @@ export const Questionform = () => {
 
   const changeClick = () => {
     if (selectedAnswerIndex === 2) {
-      // If the selected answer is the correct answer (index 2), set its color to green
+      
       setColor("green");
     } else {
-      // If the selected answer is not the correct answer, set its color to red
+      
       setColor("red");
     }
   };
