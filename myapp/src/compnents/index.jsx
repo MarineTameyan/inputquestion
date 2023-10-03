@@ -1,77 +1,81 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
+import { NavLink } from "react-router-dom";
+import { routerLinks } from "../router/router";
 
 export const Questionform = () => {
-  const [question, setQuestion] = useState("");
-  const [answers, setAnswers] = useState(["", "", "", ""]);
-  const [showAnswers, setShowAnswers] = useState(false);
-  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(-1);
-  const [color, setColor] = useState("black"); 
+  const [inputValue, setInputValue] = useState("");
+  const [answerForms, setAnswerForms] = useState([]);
+  const [error, setError] = useState("");
 
-  const handleChange = (e) => {
-    setQuestion(e.target.value);
-  };
-
-  const handleAnswerChange = (index, e) => {
-    const updatedAnswers = [...answers];
-    updatedAnswers[index] = e.target.value;
-    setAnswers(updatedAnswers);
-  };
-
-  const handleClickButton = () => {
-    setShowAnswers(true);
-  };
-
-  const changeClick = () => {
-    if (selectedAnswerIndex === 2) {
-      
-      setColor("green");
-    } else {
-      
-      setColor("red");
+  useEffect(() => {
+    const quiz = JSON.parse(localStorage.getItem('answerForms'))
+    if (quiz) {
+        setAnswerForms(quiz)
     }
-  };
+  }, []);
 
-  const getColor = (index) => {
-    return selectedAnswerIndex === index ? color : "black";
-  };
+  function handleQuestionChange(e, index) {
+    const updatedForms = [...answerForms];
+    updatedForms[index].question = e.target.value;
+    setAnswerForms(updatedForms);
+  }
+
+  function handleAnswerChange(e, questionIndex, answerIndex) {
+    const updatedForms = [...answerForms];
+    updatedForms[questionIndex].answers[answerIndex] = e.target.value;
+    setAnswerForms(updatedForms);
+  }
+
+  function addForm() {
+    if (answerForms.length < 10) {
+      setAnswerForms([...answerForms, { question: inputValue, answers: ["", "", "", ""] }]);
+      setInputValue(""); 
+      setError("");
+    } else {
+      setError("You cannot add more than ten forms.");
+    }
+  }
+
+  function onSave() {
+    localStorage.setItem("answerForms", JSON.stringify(answerForms)); 
+  }
 
   return (
     <div className="form">
-      <label className="question">
-        <input type="text" onChange={handleChange} placeholder="Question" />
-      </label>
-      <div className="answers">
-        {answers.map((answer, index) => (
-          <label key={index}>
-            <input type="radio" />
-            <input
-              type="text"
-              onChange={(e) => handleAnswerChange(index, e)}
-              placeholder={`Answer ${index + 1}`}
-            />
-          </label>
-        ))}
-        <button className="submit-button" onClick={handleClickButton}>Submit</button>
+      <div className="buttons">
+        <button onClick={addForm}>Add</button>
+        <button onClick={onSave}>Save</button>
+        <NavLink to={routerLinks.QUIZ}>Quiz</NavLink>
       </div>
-      {showAnswers && (
-        <div className="box">
-          <p className="question-box">{question}</p>
-          {answers.map((answer, index) => (
-            <div key={index}>
-              <label className="answers-box">
+      {error && <p className="error">{error}</p>}
+      {answerForms.map((form, questionIndex) => (
+        <div key={questionIndex} className="answer-form">
+          <div className="textarea">
+            <textarea
+              className="text"
+              placeholder="Question"
+              value={form.question}
+              onChange={(e) => handleQuestionChange(e, questionIndex)}
+            ></textarea>
+          </div>
+          <div className="answer">
+            {form.answers.map((answer, answerIndex) => (
+              <label key={answerIndex}>
+                <input type="radio" />
                 <input
-                  type="checkbox"
-                  checked={selectedAnswerIndex === index}
-                  onChange={() => setSelectedAnswerIndex(index)}
+                  type="text"
+                  placeholder="Answer"
+                  className="examples"
+                  value={answer}
+                  onChange={(e) => handleAnswerChange(e, questionIndex, answerIndex)}
                 />
-                <p style={{ color: getColor(index) }}>{answer}</p>
               </label>
-            </div>
-          ))}
-          <button className="click-button" onClick={changeClick}>Click</button>
+            ))}
+          </div>
         </div>
-      )}
+      ))}
     </div>
   );
 };
+

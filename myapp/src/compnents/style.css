@@ -1,60 +1,51 @@
 .form{
-    
     margin: 15px;
 }
 
-.form .question{
+.form .buttons{
     display: flex;
     justify-content: center;
+    gap: 20px;
 }
 
-.question input{
+.buttons button{
+    height: 50px;
+    width: 150px;
+    font-size: 20px;
+    text-align: center;
+    background-color: palevioletred;
+    color: white;
+    border: 1px solid palevioletred;
+}
+
+.answer-form{
+    display: grid;
+    margin-left: 150px;
+    margin-right: 150px;
+    margin-top: 30px;
+    border: 1px solid black;
+    
+}
+
+.textarea{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.textarea .text{
+    height: 100px;
+    font-size: 20px;
+}
+
+.answer{
+    display: grid;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px;
+}
+
+.answer .examples{
     height: 50px;
     width: 200px;
-    font-size: 20px;
-}
-
-.answers{
-    margin: 15px;
-    display: flex;
-    justify-content: center;
-}
-
-.answers input{
-    height: 30px;
-    width: 150px;
-    font-size: 20px;
-}
-
-.submit-button{
-    margin-left: 15px;
-    height: 50px;
-    width: 150px;
-}
-
-.box{
-    border: 1px solid black;
-    width: 500px;
-}
-
-.question-box{
-    text-align: center;
-    font-size: 25px;
-    font-style: italic;
-
-}
-
-.answers-box{
-    display: flex;
-    justify-content: center;
-}
-
-.answers-box p{
-    font-size: 20px;
-}
-
-.box .click-button{
-    height: 30px;
-    width: 150px;
-    margin: 15px;
 }
